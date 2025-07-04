@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Koffee Lane</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#8000FF',secondary:'#9EFF89'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Montserrat', sans-serif;
+}
+.marquee {
+white-space: nowrap;
+overflow: hidden;
+}
+.marquee-content {
+display: inline-block;
+animation: marquee 20s linear infinite;
+}
+@keyframes marquee {
+0% { transform: translateX(0); }
+100% { transform: translateX(-50%); }
+}
+.scale-on-hover:hover {
+transform: scale(1.05);
+transition: transform 0.3s ease;
+}
+.product-card:hover img {
+transform: scale(1.05);
+}
+.product-card img {
+transition: transform 0.3s ease;
+}
+input:focus {
+outline: none;
+}
+</style>
+</head>
+<body class="bg-[#F5F6FC]">
+<!-- Header -->
+<header class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300" id="mainHeader">
+<div class="bg-white/80 backdrop-blur-md rounded-full py-2 px-6 flex items-center justify-between gap-8 transition-all duration-300" id="headerContainer">
+<a href="#" class="text-primary text-2xl font-['Pacifico']">K/L</a>
+<nav class="hidden md:flex items-center gap-8">
+<a href="#" class="text-primary text-sm font-medium">Home</a>
+<a href="#" class="text-gray-600 hover:text-primary transition-colors text-sm font-medium">Menu</a>
+<a href="#" class="text-gray-600 hover:text-primary transition-colors text-sm font-medium">Shop</a>
+<a href="#" class="text-gray-600 hover:text-primary transition-colors text-sm font-medium">Locations</a>
+<a href="#" class="text-gray-600 hover:text-primary transition-colors text-sm font-medium">Contact</a>
+</nav>
+<div class="md:hidden w-8 h-8 flex items-center justify-center">
+<i class="ri-menu-line text-primary text-2xl"></i>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative pt-20 overflow-hidden">
+<div class="bg-primary w-full h-[70vh] md:h-[80vh] flex items-center justify-center relative">
+<div class="absolute inset-0 w-full h-full flex items-center justify-center">
+<img src="https://readdy.ai/api/search-image?query=A%20large%20iced%20coffee%20drink%20with%20cream%20top%20on%20transparent%20background%2C%20photorealistic%2C%20commercial%20quality%2C%20perfect%20for%20hero%20section%20overlay&width=800&height=1000&seq=coffee2&orientation=portrait" alt="Coffee" class="w-auto h-[90%] object-contain object-center opacity-90">
+</div>
+<div class="relative z-10 text-center px-6">
+<h1 class="text-white text-6xl md:text-8xl font-black tracking-wider mb-4 leading-tight mix-blend-difference">
+KOFFEE<br/>LANE
+</h1>
+<div class="inline-block bg-secondary text-primary px-4 py-2 rounded-full font-bold text-sm transform rotate-12 mt-4">
+Roasted with love!
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Tiles -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 max-w-7xl mx-auto">
+<div class="col-span-1 md:col-span-2 h-80 bg-[#FF5733] rounded-lg overflow-hidden relative scale-on-hover">
+<img src="https://readdy.ai/api/search-image?query=Delicious%20pastry%20with%20jam%20filling%20on%20vibrant%20orange%20background%2C%20close-up%20shot%20showing%20texture%20and%20details%2C%20professional%20food%20photography%2C%20commercial%20quality%2C%20perfect%20for%20bakery%20marketing&width=800&height=500&seq=pastry1&orientation=landscape" alt="Pastry" class="w-full h-full object-cover object-top">
+<div class="absolute inset-0 bg-black bg-opacity-20"></div>
+<div class="absolute bottom-0 left-0 p-8">
+<h2 class="text-white text-4xl font-bold">Munch!</h2>
+</div>
+</div>
+<div class="col-span-1 h-80 bg-secondary rounded-lg overflow-hidden relative scale-on-hover">
+<div class="p-8 flex flex-col h-full justify-between">
+<div>
+<h3 class="text-gray-800 text-2xl font-bold mb-2">The one® is back</h3>
+<p class="text-gray-700">Limited edition signature blend with notes of caramel and chocolate</p>
+</div>
+<div class="mt-4">
+<button class="bg-primary text-white px-4 py-2 rounded-button whitespace-nowrap">Shop now</button>
+</div>
+<div class="absolute bottom-0 right-0 p-4">
+<img src="https://readdy.ai/api/search-image?query=A%20sleek%20black%20coffee%20bag%20packaging%20with%20minimal%20design%2C%20professional%20product%20photography%20on%20mint%20green%20background%2C%20commercial%20quality%2C%20perfect%20for%20e-commerce&width=300&height=400&seq=coffeebag1&orientation=portrait" alt="Coffee Bag" class="w-40 h-auto">
+</div>
+</div>
+</div>
+<div class="col-span-1 h-80 bg-[#3A3426] rounded-lg overflow-hidden relative scale-on-hover">
+<img src="https://readdy.ai/api/search-image?query=A%20luxurious%20iced%20coffee%20drink%20with%20whipped%20cream%20and%20chocolate%20drizzle%2C%20dark%20moody%20background%2C%20professional%20beverage%20photography%2C%20commercial%20quality%2C%20perfect%20for%20coffee%20shop%20marketing&width=500&height=500&seq=icedcoffee1&orientation=squarish" alt="Iced Coffee" class="w-full h-full object-cover object-top">
+<div class="absolute inset-0 bg-black bg-opacity-30"></div>
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+<div class="bg-white bg-opacity-90 rounded-full p-4 w-24 h-24 flex items-center justify-center">
+<div class="text-center">
+<i class="ri-heart-fill text-primary"></i>
+<p class="text-xs font-medium mt-1">SIGNATURE BLEND</p>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-1 md:col-span-2 h-40 bg-primary rounded-lg overflow-hidden relative">
+<div class="marquee h-full flex items-center">
+<div class="marquee-content flex space-x-6 px-4">
+<span class="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap">NEW MENU</span>
+<span class="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap">Choco Wave</span>
+<span class="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap">Espresso Crush</span>
+<span class="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap">Caramel Macchiato</span>
+<span class="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap">Mint Mocha</span>
+<span class="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap">NEW MENU</span>
+<span class="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap">Choco Wave</span>
+<span class="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap">Espresso Crush</span>
+<span class="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap">Caramel Macchiato</span>
+<span class="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap">Mint Mocha</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Products Section -->
+<section class="py-16 px-4 max-w-7xl mx-auto">
+<div class="text-center mb-12">
+<div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="ri-cup-line text-primary"></i>
+</div>
+<h2 class="text-3xl font-bold text-gray-900">Roasted goodness to your doorstep!</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Product 1 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-sm product-card">
+<div class="p-6">
+<div class="flex justify-center mb-6">
+<img src="https://readdy.ai/api/search-image?query=A%20kraft%20paper%20coffee%20bag%20packaging%20with%20minimalist%20design%2C%20professional%20product%20photography%20on%20white%20background%2C%20commercial%20quality%2C%20perfect%20for%20e-commerce&width=300&height=400&seq=coffeebag2&orientation=portrait" alt="Coffee Bag" class="h-48 object-contain">
+</div>
+<div class="flex justify-between items-center">
+<div>
+<h3 class="font-bold text-gray-900">Flores</h3>
+<p class="text-sm text-gray-500">Medium roast, fruity, 250g</p>
+</div>
+<span class="font-bold text-gray-900">$ 8.90</span>
+</div>
+</div>
+</div>
+<!-- Product 2 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-sm product-card">
+<div class="p-6">
+<div class="flex justify-center mb-6">
+<img src="https://readdy.ai/api/search-image?query=A%20kraft%20paper%20coffee%20bag%20packaging%20with%20minimalist%20design%2C%20professional%20product%20photography%20on%20white%20background%2C%20commercial%20quality%2C%20perfect%20for%20e-commerce&width=300&height=400&seq=coffeebag3&orientation=portrait" alt="Coffee Bag" class="h-48 object-contain">
+</div>
+<div class="flex justify-between items-center">
+<div>
+<h3 class="font-bold text-gray-900">Sumatra</h3>
+<p class="text-sm text-gray-500">Dark roast, earthy, 250g</p>
+</div>
+<span class="font-bold text-gray-900">$ 9.50</span>
+</div>
+</div>
+</div>
+<!-- Product 3 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-sm product-card">
+<div class="p-6">
+<div class="flex justify-center mb-6">
+<img src="https://readdy.ai/api/search-image?query=A%20kraft%20paper%20coffee%20bag%20packaging%20with%20minimalist%20design%2C%20professional%20product%20photography%20on%20white%20background%2C%20commercial%20quality%2C%20perfect%20for%20e-commerce&width=300&height=400&seq=coffeebag4&orientation=portrait" alt="Coffee Bag" class="h-48 object-contain">
+</div>
+<div class="flex justify-between items-center">
+<div>
+<h3 class="font-bold text-gray-900">Tigerlake</h3>
+<p class="text-sm text-gray-500">Medium-dark roast, nutty, 250g</p>
+</div>
+<span class="font-bold text-gray-900">$ 8.40</span>
+</div>
+</div>
+</div>
+<!-- Product 4 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-sm product-card">
+<div class="p-6">
+<div class="flex justify-center mb-6">
+<img src="https://readdy.ai/api/search-image?query=A%20kraft%20paper%20coffee%20bag%20packaging%20with%20minimalist%20design%2C%20professional%20product%20photography%20on%20white%20background%2C%20commercial%20quality%2C%20perfect%20for%20e-commerce&width=300&height=400&seq=coffeebag5&orientation=portrait" alt="Coffee Bag" class="h-48 object-contain">
+</div>
+<div class="flex justify-between items-center">
+<div>
+<h3 class="font-bold text-gray-900">Andes</h3>
+<p class="text-sm text-gray-500">Light roast, floral, 250g</p>
+</div>
+<span class="font-bold text-gray-900">$ 9.90</span>
+</div>
+</div>
+</div>
+<!-- Product 5 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-sm product-card">
+<div class="p-6">
+<div class="flex justify-center mb-6">
+<img src="https://readdy.ai/api/search-image?query=A%20kraft%20paper%20coffee%20bag%20packaging%20with%20minimalist%20design%2C%20professional%20product%20photography%20on%20white%20background%2C%20commercial%20quality%2C%20perfect%20for%20e-commerce&width=300&height=400&seq=coffeebag6&orientation=portrait" alt="Coffee Bag" class="h-48 object-contain">
+</div>
+<div class="flex justify-between items-center">
+<div>
+<h3 class="font-bold text-gray-900">Bali</h3>
+<p class="text-sm text-gray-500">Medium roast, chocolate notes, 250g</p>
+</div>
+<span class="font-bold text-gray-900">$ 8.90</span>
+</div>
+</div>
+</div>
+<!-- Product 6 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-sm product-card">
+<div class="p-6">
+<div class="flex justify-center mb-6">
+<img src="https://readdy.ai/api/search-image?query=A%20kraft%20paper%20coffee%20bag%20packaging%20with%20minimalist%20design%2C%20professional%20product%20photography%20on%20white%20background%2C%20commercial%20quality%2C%20perfect%20for%20e-commerce&width=300&height=400&seq=coffeebag7&orientation=portrait" alt="Coffee Bag" class="h-48 object-contain">
+</div>
+<div class="flex justify-between items-center">
+<div>
+<h3 class="font-bold text-gray-900">Kintamani</h3>
+<p class="text-sm text-gray-500">Dark roast, spicy, 250g</p>
+</div>
+<span class="font-bold text-gray-900">$ 8.40</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stay in Touch Section -->
+<section class="bg-secondary py-16 px-4">
+<div class="max-w-2xl mx-auto text-center">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Stay in touch!</h2>
+<p class="text-gray-700 mb-8">Get updates on our new products & exclusive offers</p>
+<div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+<input type="email" placeholder="Your email" class="flex-grow px-4 py-3 rounded-button border-none text-sm">
+<button class="bg-primary text-white px-6 py-3 rounded-button font-medium whitespace-nowrap">Subscribe</button>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-primary py-16 px-4 text-white">
+<div class="max-w-5xl mx-auto text-center">
+<div class="mb-8">
+<h2 class="text-4xl font-['Pacifico'] mb-6">KOFFEE LANE</h2>
+</div>
+<div class="flex justify-center space-x-8 mb-8">
+<a href="#" class="hover:text-secondary transition-colors">Home</a>
+<a href="#" class="hover:text-secondary transition-colors">Menu</a>
+<a href="#" class="hover:text-secondary transition-colors">Shop</a>
+<a href="#" class="hover:text-secondary transition-colors">Locations</a>
+<a href="#" class="hover:text-secondary transition-colors">Contact</a>
+</div>
+<p class="text-sm opacity-70">© 2025 Koffee Lane. All rights reserved.</p>
+</div>
+</footer>
+<script id="headerAnimation">
+document.addEventListener('DOMContentLoaded', function() {
+const header = document.getElementById('headerContainer');
+const mainHeader = document.getElementById('mainHeader');
+window.addEventListener('scroll', () => {
+if (window.scrollY > 100) {
+header.classList.add('shadow-lg');
+mainHeader.classList.add('top-2');
+mainHeader.classList.remove('top-4');
+} else {
+header.classList.remove('shadow-lg');
+mainHeader.classList.remove('top-2');
+mainHeader.classList.add('top-4');
+}
+});
+});
+</script>
+<script id="marqueeAnimation">
+document.addEventListener('DOMContentLoaded', function() {
+const marqueeContent = document.querySelector('.marquee-content');
+if (marqueeContent) {
+const clonedContent = marqueeContent.cloneNode(true);
+document.querySelector('.marquee').appendChild(clonedContent);
+}
+});
+</script>
+</body>
+</html>

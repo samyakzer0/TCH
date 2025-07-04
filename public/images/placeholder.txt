@@ -1,0 +1,27 @@
+This directory is for storing website images.
+
+REQUIRED HERO IMAGES:
+
+1. KULHAD CUP IMAGE:
+Please place your kulhad (clay cup) image here as "kulhad-cup.png"
+- Format: PNG with transparent background preferred
+- Size: 400x500px or similar proportions
+- Subject: Traditional clay kulhad/earthen cup
+- Style: Clean, professional photography
+- Background: Transparent or isolated subject
+- Positioning: The cup should be positioned to sit at the bottom of the hero section
+
+2. STEAM EFFECT IMAGE:
+Please place your steam image here as "steam.png"
+- Format: PNG with transparent background (REQUIRED)
+- Size: 200x300px or similar proportions
+- Subject: Steam/smoke effect (like the one you uploaded)
+- Style: Wispy, realistic steam
+- Background: MUST be transparent
+- Positioning: Will be placed above the kulhad cup with floating animation
+
+The hero section is designed to match the orange/brown gradient background with:
+- "KULHAD CHAI" as the main title
+- Clay cup positioned at the bottom center
+- Animated steam effect rising from the cup
+- Subtle background blur effects for warmth
