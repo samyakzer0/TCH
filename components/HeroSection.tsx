@@ -33,7 +33,7 @@ export default function HeroSection() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              KULHAD<br/>CHAI
+              THE CHAI<br/>HOUSE
             </motion.h1>
           </div>
 
@@ -54,21 +54,21 @@ export default function HeroSection() {
             />
           </motion.div>
 
-          {/* Steam Effect */}
+          {/* Steam Effect - Starting from clay cup */}
           <motion.div 
-            className="absolute bottom-[220px] md:bottom-[300px] left-1/2 transform -translate-x-1/2 z-25"
-            initial={{ opacity: 0, scale: 0.8 }}
+            className="absolute bottom-[100px] md:bottom-[60px] left-1/2 transform -translate-x-1/2 z-25"
+            initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5, delay: 1 }}
           >
             <motion.div
               animate={{ 
-                y: [-10, -20, -10],
-                opacity: [0.6, 0.8, 0.6],
-                scale: [1, 1.1, 1]
+                y: [-15, -25, -15],
+                opacity: [0.7, 0.9, 0.7],
+                scale: [1, 1.2, 1]
               }}
               transition={{ 
-                duration: 3, 
+                duration: 4, 
                 repeat: Infinity, 
                 ease: "easeInOut" 
               }}
@@ -76,9 +76,9 @@ export default function HeroSection() {
               <Image
                 src="/images/steam.png"
                 alt="Steam effect"
-                width={180}
-                height={250}
-                className="w-auto h-[120px] md:h-[180px] object-contain opacity-70"
+                width={240}
+                height={320}
+                className="w-auto h-[180px] md:h-[250px] object-contain opacity-80"
               />
             </motion.div>
           </motion.div>
