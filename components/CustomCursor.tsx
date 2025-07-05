@@ -7,8 +7,19 @@ export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState(false)
   const [isClicking, setIsClicking] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    // Check if device is mobile/touch device
+    const checkIfMobile = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+      const isSmallScreen = window.matchMedia('(max-width: 768px)').matches
+      setIsMobile(isTouchDevice || isSmallScreen)
+    }
+
+    checkIfMobile()
+    window.addEventListener('resize', checkIfMobile)
+
     const updateMousePosition = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY })
     }
@@ -59,6 +70,7 @@ export default function CustomCursor() {
     document.addEventListener('mouseout', handleMouseLeave)
 
     return () => {
+      window.removeEventListener('resize', checkIfMobile)
       window.removeEventListener('mousemove', updateMousePosition)
       window.removeEventListener('mousedown', handleMouseDown)
       window.removeEventListener('mouseup', handleMouseUp)
@@ -66,6 +78,11 @@ export default function CustomCursor() {
       document.removeEventListener('mouseout', handleMouseLeave)
     }
   }, [])
+
+  // Don't render cursor on mobile devices
+  if (isMobile) {
+    return null
+  }
 
   return (
     <motion.div

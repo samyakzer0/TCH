@@ -137,42 +137,47 @@ export default function MenuPage() {
       
       {/* Hero Section */}
       <motion.section 
-        className="relative pt-20 overflow-hidden px-4"
+        className="relative pt-24 pb-8 overflow-hidden px-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <motion.div 
-          className="bg-primary w-full h-[50vh] flex items-center justify-center relative rounded-2xl"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
+        <div className="max-w-6xl mx-auto">
           <motion.div 
-            className="absolute right-8 top-1/2 transform -translate-y-1/2"
-            initial={{ x: 100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            className="bg-primary w-full h-[50vh] flex items-center relative rounded-2xl overflow-hidden"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <Image
-              src="https://readdy.ai/api/search-image?query=A%20delicious%20chocolate%20milkshake%20with%20whipped%20cream%20and%20chocolate%20drizzle%2C%20professional%20beverage%20photography%20on%20transparent%20background%2C%20commercial%20quality&width=400&height=600&seq=milkshake1&orientation=portrait"
-              alt="Milkshake"
-              width={400}
-              height={600}
-              className="w-auto h-[80%] object-contain"
-            />
-          </motion.div>
-          <div className="relative z-10 text-left px-8">
-            <motion.h1 
-              className="text-white text-6xl md:text-8xl font-black tracking-wider leading-tight"
-              initial={{ x: -100, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
+            {/* Text Section */}
+            <div className="relative z-10 text-left px-8 lg:px-12">
+              <motion.h1 
+                className="text-white text-6xl md:text-8xl font-black tracking-wider leading-tight"
+                initial={{ x: -100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              >
+                MENU
+              </motion.h1>
+            </div>
+
+            {/* Pizza Image Section - Half visible, bottom-right */}
+            <motion.div 
+              className="absolute bottom-0 right-0 overflow-hidden"
+              initial={{ x: 200, opacity: 0 }}
+              animate={{ x: 100, opacity: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
             >
-              MENU
-            </motion.h1>
-          </div>
-        </motion.div>
+              <Image
+                src="/images/menu.png"
+                alt="Menu Item"
+                width={400}
+                height={600}
+                className="w-auto h-[300px] md:h-[400px] object-contain"
+              />
+            </motion.div>
+          </motion.div>
+        </div>
       </motion.section>
 
       {/* Coffee Section */}

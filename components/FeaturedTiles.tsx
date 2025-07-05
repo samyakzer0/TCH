@@ -123,8 +123,8 @@ export default function FeaturedTiles() {
         transition={{ duration: 0.3 }}
       >
         <Image
-          src="https://readdy.ai/api/search-image?query=A%20luxurious%20iced%20coffee%20drink%20with%20whipped%20cream%20and%20chocolate%20drizzle%2C%20dark%20moody%20background%2C%20professional%20beverage%20photography%2C%20commercial%20quality%2C%20perfect%20for%20coffee%20shop%20marketing&width=500&height=500&seq=icedcoffee1&orientation=squarish"
-          alt="Iced Coffee"
+          src="images/tea.png"
+          alt="Chai"   
           width={500}
           height={500}
           className="w-full h-full object-cover object-top"

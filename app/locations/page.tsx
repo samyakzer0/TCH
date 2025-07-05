@@ -135,7 +135,7 @@ export default function LocationsPage() {
                 className="w-full h-full"
               >
                 <Image
-                  src="https://readdy.ai/api/search-image?query=Modern%20coffee%20shop%20interior%20with%20warm%20lighting%2C%20wooden%20furniture%2C%20people%20enjoying%20coffee%2C%20professional%20architectural%20photography&width=600&height=500&seq=cafe1&orientation=landscape"
+                  src="images/cafe1.jpg"
                   alt="The Chai House NYC Location"
                   width={600}
                   height={500}
