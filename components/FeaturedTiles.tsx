@@ -42,7 +42,7 @@ export default function FeaturedTiles() {
 
   return (
     <motion.section 
-      className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 max-w-7xl mx-auto mt-4"
+      className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 max-w-7xl mx-auto -mt-2"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -153,29 +153,47 @@ export default function FeaturedTiles() {
         transition={{ duration: 0.3 }}
       >
         <div className="marquee h-full flex items-center" ref={marqueeRef}>
-          <div className="marquee-content flex space-x-6 px-4">
-            {['NEW MENU', 'Choco Wave', 'Espresso Crush', 'Caramel Macchiato', 'Mint Mocha'].map((item, index) => (
-              <motion.span 
-                key={index}
-                className="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap"
-                whileHover={{ scale: 1.1, y: -2 }}
-                transition={{ duration: 0.2 }}
-              >
-                {item}
-              </motion.span>
-            ))}
-            {['NEW MENU', 'Choco Wave', 'Espresso Crush', 'Caramel Macchiato', 'Mint Mocha'].map((item, index) => (
-              <motion.span 
-                key={index + 5}
-                className="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap"
-                whileHover={{ scale: 1.1, y: -2 }}
-                transition={{ duration: 0.2 }}
-              >
-                {item}
-              </motion.span>
-            ))}
-          </div>
-        </div>
+  <div className="marquee-content flex space-x-6 px-4">
+    {[
+      'Freshly Brewed',
+      'Chai is Love',
+      'Baked Daily',
+      'Steamy Sips',
+      'Just Chill',
+      'Flavor Burst',
+      'Hot & Frothy',
+      'Sip. Relax. Repeat.'
+    ].map((item, index) => (
+      <motion.span 
+        key={index}
+        className="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap"
+        whileHover={{ scale: 1.1, y: -2 }}
+        transition={{ duration: 0.2 }}
+      >
+        {item}
+      </motion.span>
+    ))}
+    {[
+      'Freshly Brewed',
+      'Chai is Love',
+      'Baked Daily',
+      'Steamy Sips',
+      'Just Chill',
+      'Flavor Burst',
+      'Hot & Frothy',
+      'Sip. Relax. Repeat.'
+    ].map((item, index) => (
+      <motion.span 
+        key={index + 10}
+        className="bg-white text-primary px-4 py-2 rounded-full font-medium whitespace-nowrap"
+        whileHover={{ scale: 1.1, y: -2 }}
+        transition={{ duration: 0.2 }}
+      >
+        {item}
+      </motion.span>
+    ))}
+  </div>
+</div>
       </motion.div>
     </motion.section>
   )

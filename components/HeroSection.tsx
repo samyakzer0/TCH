@@ -6,12 +6,12 @@ import { motion } from 'framer-motion'
 export default function HeroSection() {
   return (
     <motion.section 
-      className="relative pt-24 pb-8 overflow-hidden px-4"
+      className="relative pt-24 pb-2 overflow-hidden px-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <motion.div 
           className="bg-gradient-to-br from-[#E67E22] via-[#D35400] to-[#B66A55] w-full h-[70vh] md:h-[80vh] flex items-center justify-center relative rounded-2xl overflow-hidden"
           initial={{ scale: 0.9, opacity: 0 }}
