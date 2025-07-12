@@ -6,30 +6,73 @@ import FeedbackModal from './FeedbackModal'
 
 export default function OrderStatusTracker() {
   const [orderNumber, setOrderNumber] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [searchType, setSearchType] = useState<'order_number' | 'phone'>('order_number')
   const [order, setOrder] = useState<any>(null)
+  const [orders, setOrders] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showFeedback, setShowFeedback] = useState(false)
 
   const trackOrder = async () => {
-    if (!orderNumber.trim()) return
+    const searchValue = searchType === 'order_number' ? orderNumber.trim() : phoneNumber.trim()
+    if (!searchValue) return
     
     setLoading(true)
     setError('')
+    setOrder(null)
+    setOrders([])
     
     try {
-      const response = await fetch(`/api/orders?order_number=${orderNumber}`)
+      const searchParam = searchType === 'order_number' ? 'order_number' : 'phone'
+      const response = await fetch(`/api/orders?${searchParam}=${searchValue}`)
       const data = await response.json()
       
       if (data.success && data.data.length > 0) {
-        setOrder(data.data[0])
+        if (searchType === 'order_number') {
+          setOrder(data.data[0])
+        } else {
+          // For phone search, show all orders for that phone number
+          setOrders(data.data)
+          if (data.data.length === 1) {
+            setOrder(data.data[0])
+          }
+        }
       } else {
-        setError('Order not found. Please check your order number.')
+        const searchLabel = searchType === 'order_number' ? 'order number' : 'phone number'
+        setError(`No orders found for this ${searchLabel}. Please check and try again.`)
       }
     } catch (error) {
       setError('Failed to fetch order details.')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const selectOrder = (selectedOrder: any) => {
+    setOrder(selectedOrder)
+    setOrders([])
+  }
+
+  const goBackToList = () => {
+    setOrder(null)
+    // Re-search to show all orders for the phone number
+    if (searchType === 'phone' && phoneNumber.trim()) {
+      trackOrder()
+    }
+  }
+
+  const clearSearch = () => {
+    setOrderNumber('')
+    setPhoneNumber('')
+    setOrder(null)
+    setOrders([])
+    setError('')
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      trackOrder()
     }
   }
 
@@ -95,26 +138,138 @@ export default function OrderStatusTracker() {
       <div className="bg-white rounded-lg shadow-sm p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Track Your Order</h2>
         
+        {/* Search Type Selection */}
+        <div className="mb-4">
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                setSearchType('order_number')
+                setError('')
+                setOrder(null)
+                setOrders([])
+              }}
+              className={`flex-1 py-2 px-4 rounded-button font-medium transition-colors ${
+                searchType === 'order_number'
+                  ? 'bg-primary text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              <i className="ri-file-list-line mr-2"></i>
+              Order Number
+            </button>
+            <button
+              onClick={() => {
+                setSearchType('phone')
+                setError('')
+                setOrder(null)
+                setOrders([])
+              }}
+              className={`flex-1 py-2 px-4 rounded-button font-medium transition-colors ${
+                searchType === 'phone'
+                  ? 'bg-primary text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              <i className="ri-phone-line mr-2"></i>
+              Phone Number
+            </button>
+          </div>
+          <p className="text-xs text-gray-500 mt-2">
+            {searchType === 'order_number' 
+              ? 'Search for a specific order using your order number'
+              : 'Search for all orders associated with your phone number'
+            }
+          </p>
+        </div>
+
+        {/* Search Input */}
         <div className="flex gap-3 mb-6">
-          <input
-            type="text"
-            placeholder="Enter your order number (e.g., TCH-1234567890-ABCD)"
-            value={orderNumber}
-            onChange={(e) => setOrderNumber(e.target.value)}
-            className="flex-1 p-3 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20"
-          />
+          {searchType === 'order_number' ? (
+            <input
+              type="text"
+              placeholder="Enter your order number (e.g., TCH-1234567890-ABCD)"
+              value={orderNumber}
+              onChange={(e) => setOrderNumber(e.target.value)}
+              onKeyPress={handleKeyPress}
+              className="flex-1 p-3 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          ) : (
+            <input
+              type="tel"
+              placeholder="Enter your phone number"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              onKeyPress={handleKeyPress}
+              className="flex-1 p-3 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          )}
           <button
             onClick={trackOrder}
             disabled={loading}
             className="bg-primary text-white px-6 py-3 rounded-button hover:bg-primary/90 transition-colors disabled:opacity-50"
           >
-            {loading ? 'Tracking...' : 'Track Order'}
+            {loading ? 'Searching...' : 'Track Order'}
           </button>
+          {(orderNumber || phoneNumber || order || orders.length > 0) && (
+            <button
+              onClick={clearSearch}
+              className="px-4 py-3 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors"
+              title="Clear search"
+            >
+              <i className="ri-close-line"></i>
+            </button>
+          )}
         </div>
 
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-button p-4 mb-6">
             <p className="text-red-600">{error}</p>
+          </div>
+        )}
+
+        {/* Multiple Orders List (when searching by phone) */}
+        {orders.length > 1 && (
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Found {orders.length} orders for this phone number:
+            </h3>
+            <div className="space-y-3">
+              {orders.map((orderItem, index) => (
+                <div
+                  key={index}
+                  onClick={() => selectOrder(orderItem)}
+                  className="p-4 border rounded-button hover:bg-gray-50 cursor-pointer transition-colors"
+                >
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-medium text-gray-900">Order #{orderItem.order_number}</p>
+                      <p className="text-sm text-gray-600">
+                        {new Date(orderItem.created_at).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </p>
+                      <p className="text-sm text-gray-600">${orderItem.total_amount.toFixed(2)}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        orderItem.status === 'completed' ? 'bg-green-100 text-green-800' :
+                        orderItem.status === 'ready' ? 'bg-blue-100 text-blue-800' :
+                        orderItem.status === 'preparing' ? 'bg-yellow-100 text-yellow-800' :
+                        orderItem.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {orderItem.status.charAt(0).toUpperCase() + orderItem.status.slice(1)}
+                      </span>
+                      <i className="ri-arrow-right-s-line text-gray-400"></i>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
@@ -124,6 +279,17 @@ export default function OrderStatusTracker() {
             animate={{ opacity: 1, y: 0 }}
             className="space-y-6"
           >
+            {/* Back Button (only show when there were multiple orders) */}
+            {searchType === 'phone' && orders.length === 0 && (
+              <button
+                onClick={goBackToList}
+                className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+              >
+                <i className="ri-arrow-left-line"></i>
+                Back to all orders
+              </button>
+            )}
+
             {/* Order Details */}
             <div className="bg-gray-50 rounded-button p-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

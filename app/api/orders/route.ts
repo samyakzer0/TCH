@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status');
     const limit = searchParams.get('limit');
     const orderNumber = searchParams.get('order_number');
+    const phone = searchParams.get('phone');
     
     await initializeDatabase();
     
@@ -25,6 +26,11 @@ export async function GET(request: NextRequest) {
     if (orderNumber) {
       conditions.push('order_number = ?');
       orderParams.push(orderNumber);
+    }
+    
+    if (phone) {
+      conditions.push('customer_phone = ?');
+      orderParams.push(phone);
     }
     
     if (conditions.length > 0) {

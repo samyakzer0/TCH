@@ -365,7 +365,7 @@ export default function OrderingSystem({}: OrderingSystemProps) {
 
         {/* Cart Section */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg shadow-sm p-6 sticky top-24">
+          <div className="bg-white rounded-lg shadow-sm p-6 sticky top-24 h-fit max-h-[calc(100vh-6rem)] flex flex-col">
             <h3 className="text-xl font-bold text-gray-900 mb-4">Your Order</h3>
             
             {/* Order Type Selection */}
@@ -428,38 +428,40 @@ export default function OrderingSystem({}: OrderingSystemProps) {
               )}
             </div>
 
-            {/* Cart Items */}
-            <div className="mb-4">
+            {/* Cart Items - Scrollable Container */}
+            <div className="mb-4 flex-1 min-h-0 max-h-96 lg:max-h-none">
               {cart.length === 0 ? (
                 <p className="text-gray-500 text-center py-8">Your cart is empty</p>
               ) : (
-                <div className="space-y-3">
-                  {cart.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-button">
-                      <div className="flex-1">
-                        <h4 className="font-medium text-gray-900">{item.menu_item.name}</h4>
-                        {item.customizations.length > 0 && (
-                          <p className="text-xs text-gray-600">{item.customizations.join(', ')}</p>
-                        )}
-                        <p className="text-sm text-gray-600">${item.menu_item.price.toFixed(2)} each</p>
+                <div className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                  <div className="space-y-3 pr-2">
+                    {cart.map((item, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-button">
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900">{item.menu_item.name}</h4>
+                          {item.customizations.length > 0 && (
+                            <p className="text-xs text-gray-600">{item.customizations.join(', ')}</p>
+                          )}
+                          <p className="text-sm text-gray-600">${item.menu_item.price.toFixed(2)} each</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => updateQuantity(index, item.quantity - 1)}
+                            className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
+                          >
+                            <i className="ri-subtract-line"></i>
+                          </button>
+                          <span className="w-8 text-center font-medium">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(index, item.quantity + 1)}
+                            className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
+                          >
+                            <i className="ri-add-line"></i>
+                          </button>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => updateQuantity(index, item.quantity - 1)}
-                          className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
-                        >
-                          <i className="ri-subtract-line"></i>
-                        </button>
-                        <span className="w-8 text-center font-medium">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(index, item.quantity + 1)}
-                          className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
-                        >
-                          <i className="ri-add-line"></i>
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
