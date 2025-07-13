@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeDatabase, runStatement } from '../../../../lib/database';
+import supabase from '@/lib/supabase';
 
 export async function PATCH(
   request: NextRequest,
@@ -9,20 +9,27 @@ export async function PATCH(
     const { status, estimated_completion_time } = await request.json();
     const orderId = params.id;
     
-    await initializeDatabase();
-    
-    let query = `UPDATE orders SET status = ?, updated_at = CURRENT_TIMESTAMP`;
-    const queryParams = [status];
+    const updateData: any = { 
+      status,
+      updated_at: new Date().toISOString()
+    };
     
     if (estimated_completion_time) {
-      query += `, estimated_completion_time = ?`;
-      queryParams.push(estimated_completion_time);
+      updateData.estimated_completion_time = estimated_completion_time;
     }
     
-    query += ` WHERE id = ?`;
-    queryParams.push(orderId);
-    
-    await runStatement(query, queryParams);
+    const { error } = await supabase
+      .from('orders')
+      .update(updateData)
+      .eq('id', orderId);
+
+    if (error) {
+      console.error('Error updating order status:', error);
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Failed to update order status' 
+      }, { status: 500 });
+    }
     
     return NextResponse.json({ 
       success: true, 
@@ -44,13 +51,21 @@ export async function DELETE(
   try {
     const orderId = params.id;
     
-    await initializeDatabase();
-    
-    await runStatement(`
-      UPDATE orders 
-      SET status = 'cancelled', updated_at = CURRENT_TIMESTAMP 
-      WHERE id = ?
-    `, [orderId]);
+    const { error } = await supabase
+      .from('orders')
+      .update({ 
+        status: 'cancelled',
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', orderId);
+
+    if (error) {
+      console.error('Error cancelling order:', error);
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Failed to cancel order' 
+      }, { status: 500 });
+    }
     
     return NextResponse.json({ 
       success: true, 

@@ -1,18 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeDatabase, runQuery } from '../../../../lib/database';
+import supabase from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
     
-    await initializeDatabase();
+    const { data: users, error } = await supabase
+      .from('admin_users')
+      .select('id, email, role')
+      .eq('email', email)
+      .eq('password', password);
+
+    if (error) {
+      console.error('Error during login:', error);
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Login failed' 
+      }, { status: 500 });
+    }
     
-    const user = await runQuery(`
-      SELECT id, email, role FROM admin_users 
-      WHERE email = ? AND password = ?
-    `, [email, password]);
-    
-    if (user.length === 0) {
+    if (!users || users.length === 0) {
       return NextResponse.json({ 
         success: false, 
         error: 'Invalid credentials' 
@@ -22,7 +29,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       data: { 
-        user: user[0],
+        user: users[0],
         token: 'dummy-token' // Simple token for demo
       } 
     });

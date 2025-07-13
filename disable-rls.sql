@@ -1,0 +1,9 @@
+-- Disable Row Level Security for all tables (Development only)
+-- Run this in your Supabase SQL Editor
+
+ALTER TABLE menu_items DISABLE ROW LEVEL SECURITY;
+ALTER TABLE orders DISABLE ROW LEVEL SECURITY;
+ALTER TABLE order_items DISABLE ROW LEVEL SECURITY;
+ALTER TABLE feedback DISABLE ROW LEVEL SECURITY;
+ALTER TABLE notifications DISABLE ROW LEVEL SECURITY;
+ALTER TABLE admin_users DISABLE ROW LEVEL SECURITY;

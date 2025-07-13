@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeDatabase, runQuery, runStatement } from '../../../lib/database';
+import supabase from '@/lib/supabase';
 import { v4 as uuidv4 } from 'uuid';
 import { Order, OrderItem, OrderNotification } from '../../../types';
 
@@ -11,70 +11,48 @@ export async function GET(request: NextRequest) {
     const orderNumber = searchParams.get('order_number');
     const phone = searchParams.get('phone');
     
-    await initializeDatabase();
+    // Build the query
+    let query = supabase.from('orders').select(`
+      *,
+      order_items (
+        *,
+        menu_items (name, price)
+      )
+    `);
     
-    // First get orders
-    let orderQuery = `SELECT * FROM orders`;
-    const orderParams: any[] = [];
-    const conditions: string[] = [];
-    
+    // Apply filters
     if (status) {
-      conditions.push('status = ?');
-      orderParams.push(status);
+      query = query.eq('status', status);
     }
     
     if (orderNumber) {
-      conditions.push('order_number = ?');
-      orderParams.push(orderNumber);
+      query = query.eq('order_number', orderNumber);
     }
     
     if (phone) {
-      conditions.push('customer_phone = ?');
-      orderParams.push(phone);
+      query = query.eq('customer_phone', phone);
     }
     
-    if (conditions.length > 0) {
-      orderQuery += ` WHERE ${conditions.join(' AND ')}`;
-    }
-    
-    orderQuery += ` ORDER BY created_at DESC`;
+    // Apply ordering and limit
+    query = query.order('created_at', { ascending: false });
     
     if (limit) {
-      orderQuery += ` LIMIT ?`;
-      orderParams.push(parseInt(limit));
+      query = query.limit(parseInt(limit));
     }
     
-    const orders = await runQuery(orderQuery, orderParams) as any[];
+    const { data: orders, error } = await query;
     
-    // Then get items for each order
-    const ordersWithItems = await Promise.all(
-      orders.map(async (order) => {
-        const items = await runQuery(`
-          SELECT oi.*, mi.name as menu_item_name, mi.description as menu_item_description, 
-                 mi.price as menu_item_price, mi.category as menu_item_category
-          FROM order_items oi
-          JOIN menu_items mi ON oi.menu_item_id = mi.id
-          WHERE oi.order_id = ?
-        `, [order.id]);
-        
-        return {
-          ...order,
-          items: items.map((item: any) => ({
-            ...item,
-            menu_item: {
-              name: item.menu_item_name,
-              description: item.menu_item_description,
-              price: item.menu_item_price,
-              category: item.menu_item_category
-            }
-          }))
-        };
-      })
-    );
+    if (error) {
+      console.error('Error fetching orders:', error);
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Failed to fetch orders' 
+      }, { status: 500 });
+    }
 
     return NextResponse.json({ 
       success: true, 
-      data: ordersWithItems 
+      data: orders || [] 
     });
   } catch (error) {
     console.error('Error fetching orders:', error);
@@ -97,8 +75,6 @@ export async function POST(request: NextRequest) {
       special_instructions 
     } = await request.json();
     
-    await initializeDatabase();
-    
     // Calculate total amount
     const total_amount = items.reduce((sum: number, item: any) => {
       return sum + (item.price * item.quantity);
@@ -108,21 +84,48 @@ export async function POST(request: NextRequest) {
     const order_number = `TCH-${Date.now()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
     
     // Create order
-    const orderResult = await runStatement(`
-      INSERT INTO orders (
-        order_number, customer_name, customer_phone, customer_email, order_type, 
-        table_number, total_amount, special_instructions
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `, [order_number, customer_name, customer_phone, customer_email, order_type, table_number, total_amount, special_instructions]);
-    
-    const orderId = orderResult.id;
+    const { data: order, error: orderError } = await supabase
+      .from('orders')
+      .insert([{
+        order_number, 
+        customer_name, 
+        customer_phone, 
+        customer_email, 
+        order_type, 
+        table_number, 
+        total_amount, 
+        special_instructions
+      }])
+      .select()
+      .single();
+
+    if (orderError) {
+      console.error('Error creating order:', orderError);
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Failed to create order' 
+      }, { status: 500 });
+    }
     
     // Create order items
-    for (const item of items) {
-      await runStatement(`
-        INSERT INTO order_items (order_id, menu_item_id, quantity, price, customizations)
-        VALUES (?, ?, ?, ?, ?)
-      `, [orderId, item.menu_item_id, item.quantity, item.price, JSON.stringify(item.customizations || [])]);
+    const orderItems = items.map((item: any) => ({
+      order_id: order.id,
+      menu_item_id: item.menu_item_id,
+      quantity: item.quantity,
+      price: item.price,
+      customizations: JSON.stringify(item.customizations || [])
+    }));
+
+    const { error: itemsError } = await supabase
+      .from('order_items')
+      .insert(orderItems);
+
+    if (itemsError) {
+      console.error('Error creating order items:', itemsError);
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Failed to create order items' 
+      }, { status: 500 });
     }
     
     // Send notification (you can implement email/SMS here)
@@ -148,7 +151,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       data: { 
-        order_id: orderId, 
+        order_id: order.id, 
         order_number,
         total_amount,
         estimated_time: '15-20 minutes'

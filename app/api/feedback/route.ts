@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeDatabase, runStatement } from '../../../lib/database';
+import supabase from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,14 +12,24 @@ export async function POST(request: NextRequest) {
       comments 
     } = await request.json();
     
-    await initializeDatabase();
-    
-    await runStatement(`
-      INSERT INTO feedback (
-        order_id, food_quality_rating, service_speed_rating, 
-        value_rating, overall_rating, comments
-      ) VALUES (?, ?, ?, ?, ?, ?)
-    `, [order_id, food_quality_rating, service_speed_rating, value_rating, overall_rating, comments]);
+    const { error } = await supabase
+      .from('feedback')
+      .insert([{
+        order_id, 
+        food_quality_rating, 
+        service_speed_rating, 
+        value_rating, 
+        overall_rating, 
+        comments
+      }]);
+
+    if (error) {
+      console.error('Error submitting feedback:', error);
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Failed to submit feedback' 
+      }, { status: 500 });
+    }
     
     return NextResponse.json({ 
       success: true, 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { initializeDatabase, runStatement } from '@/lib/database'
+import supabase, { supabaseAdmin } from '@/lib/supabase'
 
 export async function PATCH(
   request: NextRequest,
@@ -7,12 +7,22 @@ export async function PATCH(
 ) {
   try {
     const { is_available } = await request.json()
-    await initializeDatabase()
 
-    await runStatement(
-      'UPDATE menu_items SET is_available = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
-      [is_available ? 1 : 0, params.id]
-    )
+    const { error } = await supabaseAdmin
+      .from('menu_items')
+      .update({ 
+        is_available,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', params.id)
+
+    if (error) {
+      console.error('Error updating menu item:', error)
+      return NextResponse.json(
+        { success: false, error: 'Failed to update menu item' },
+        { status: 500 }
+      )
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {
@@ -30,14 +40,27 @@ export async function PUT(
 ) {
   try {
     const { name, description, price, category, image_url, is_available } = await request.json()
-    await initializeDatabase()
 
-    await runStatement(
-      `UPDATE menu_items 
-       SET name = ?, description = ?, price = ?, category = ?, image_url = ?, is_available = ?, updated_at = CURRENT_TIMESTAMP 
-       WHERE id = ?`,
-      [name, description, price, category, image_url, is_available ? 1 : 0, params.id]
-    )
+    const { error } = await supabaseAdmin
+      .from('menu_items')
+      .update({ 
+        name, 
+        description, 
+        price: parseFloat(price), 
+        category, 
+        image_url, 
+        is_available,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', params.id)
+
+    if (error) {
+      console.error('Error updating menu item:', error)
+      return NextResponse.json(
+        { success: false, error: 'Failed to update menu item' },
+        { status: 500 }
+      )
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {
@@ -54,9 +77,18 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    await initializeDatabase()
+    const { error } = await supabaseAdmin
+      .from('menu_items')
+      .delete()
+      .eq('id', params.id)
 
-    await runStatement('DELETE FROM menu_items WHERE id = ?', [params.id])
+    if (error) {
+      console.error('Error deleting menu item:', error)
+      return NextResponse.json(
+        { success: false, error: 'Failed to delete menu item' },
+        { status: 500 }
+      )
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {

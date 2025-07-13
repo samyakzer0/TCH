@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.1",
+    "@supabase/supabase-js": "^2.50.5",
     "@types/nodemailer": "^6.4.17",
     "@types/sqlite3": "^5.1.0",
     "@types/uuid": "^10.0.0",
+    "@vercel/postgres": "^0.10.0",
     "framer-motion": "^11.0.0",
     "googleapis": "^152.0.0",
     "gsap": "^3.13.0",
@@ -20,6 +23,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sqlite3": "^5.1.7",
+    "supabase": "^2.30.4",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
