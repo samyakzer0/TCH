@@ -307,13 +307,13 @@ export default function OrderingSystem({}: OrderingSystemProps) {
 
   return (
     <div className="max-w-7xl mx-auto p-4 relative">
-      {/* Mobile Cart Button */}
+      {/* Cart Button - Now for all screen sizes */}
       <button
         onClick={() => {
-          console.log('Mobile cart button clicked!')
+          console.log('Cart button clicked!')
           setShowMobileCart(true)
         }}
-        className="fixed top-4 right-4 z-50 lg:hidden bg-white rounded-full p-3 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow"
+        className="fixed top-4 right-4 z-50 bg-white rounded-full p-3 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow"
       >
         <div className="relative">
           <i className="ri-shopping-cart-line text-primary text-xl"></i>
@@ -325,9 +325,9 @@ export default function OrderingSystem({}: OrderingSystemProps) {
         </div>
       </button>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Menu Section */}
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 gap-6">
+        {/* Menu Section - Now full width */}
+        <div className="col-span-1">
           <div className="bg-white rounded-lg shadow-sm p-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Our Menu</h2>
             
@@ -384,139 +384,6 @@ export default function OrderingSystem({}: OrderingSystemProps) {
                 </motion.div>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Cart Section */}
-        <div className="lg:col-span-1 hidden lg:block">
-          <div className="bg-white rounded-lg shadow-sm p-6 sticky top-24 h-fit max-h-[calc(100vh-6rem)] flex flex-col">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">Your Order</h3>
-            
-            {/* Order Type Selection */}
-            <div className="mb-4">
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setOrderType('dine-in')}
-                  className={`flex-1 py-2 rounded-button font-medium transition-colors ${
-                    orderType === 'dine-in'
-                      ? 'bg-primary text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  Dine In
-                </button>
-                <button
-                  onClick={() => setOrderType('takeaway')}
-                  className={`flex-1 py-2 rounded-button font-medium transition-colors ${
-                    orderType === 'takeaway'
-                      ? 'bg-primary text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  Takeaway
-                </button>
-              </div>
-            </div>
-
-            {/* Customer Information */}
-            <div className="mb-4 space-y-3">
-              <input
-                type="text"
-                placeholder="Your Name"
-                value={customerInfo.name}
-                onChange={(e) => setCustomerInfo({...customerInfo, name: e.target.value})}
-                className="w-full p-3 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20"
-              />
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                value={customerInfo.phone}
-                onChange={(e) => setCustomerInfo({...customerInfo, phone: e.target.value})}
-                className="w-full p-3 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20"
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                value={customerInfo.email}
-                onChange={(e) => setCustomerInfo({...customerInfo, email: e.target.value})}
-                className="w-full p-3 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20"
-              />
-              {orderType === 'dine-in' && (
-                <input
-                  type="text"
-                  placeholder="Table Number"
-                  value={customerInfo.table_number}
-                  onChange={(e) => setCustomerInfo({...customerInfo, table_number: e.target.value})}
-                  className="w-full p-3 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20"
-                />
-              )}
-            </div>
-
-            {/* Cart Items - Scrollable Container with better height management */}
-            <div className="mb-4 flex-1 min-h-0 overflow-hidden">
-              {cart.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">Your cart is empty</p>
-              ) : (
-                <div className="h-full max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                  <div className="space-y-3 pr-2">
-                    {cart.map((item, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-button">
-                        <div className="flex-1">
-                          <h4 className="font-medium text-gray-900">{item.menu_item.name}</h4>
-                          {item.customizations.length > 0 && (
-                            <p className="text-xs text-gray-600">{item.customizations.join(', ')}</p>
-                          )}
-                          <p className="text-sm text-gray-600">₹{item.menu_item.price.toFixed(2)} each</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => updateQuantity(index, item.quantity - 1)}
-                            className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
-                          >
-                            <i className="ri-subtract-line"></i>
-                          </button>
-                          <span className="w-8 text-center font-medium">{item.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(index, item.quantity + 1)}
-                            className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
-                          >
-                            <i className="ri-add-line"></i>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Special Instructions */}
-            <div className="mb-4 flex-shrink-0">
-              <textarea
-                placeholder="Special instructions (optional)"
-                value={specialInstructions}
-                onChange={(e) => setSpecialInstructions(e.target.value)}
-                className="w-full p-3 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
-                rows={2}
-              />
-            </div>
-
-            {/* Total and Checkout - Fixed at bottom */}
-            {cart.length > 0 && (
-              <div className="border-t pt-4 flex-shrink-0 mt-auto">
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-lg font-semibold">Total:</span>
-                  <span className="text-xl font-bold text-primary">₹{getTotalAmount().toFixed(2)}</span>
-                </div>
-                <button
-                  onClick={placeOrder}
-                  disabled={!customerInfo.name || !customerInfo.phone || !customerInfo.email || (orderType === 'dine-in' && !customerInfo.table_number)}
-                  className="w-full bg-primary text-white py-3 rounded-button font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Place Order
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -579,14 +446,14 @@ export default function OrderingSystem({}: OrderingSystemProps) {
         )}
       </AnimatePresence>
 
-      {/* Mobile Cart Modal */}
+      {/* Cart Modal - Now for all screen sizes */}
       <AnimatePresence>
         {showMobileCart && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-end justify-center z-50 lg:hidden"
+            className="fixed inset-0 bg-black/50 flex items-end justify-center z-50"
             onClick={() => {
               console.log('Modal backdrop clicked')
               setShowMobileCart(false)
@@ -596,10 +463,10 @@ export default function OrderingSystem({}: OrderingSystemProps) {
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
-              className="bg-white rounded-t-lg w-full max-h-[90vh] flex flex-col"
+              className="bg-white rounded-t-lg w-full max-w-2xl max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Mobile Cart Header */}
+              {/* Cart Header */}
               <div className="flex items-center justify-between p-4 border-b">
                 <h3 className="text-xl font-bold text-gray-900">Your Order</h3>
                 <button
@@ -679,7 +546,12 @@ export default function OrderingSystem({}: OrderingSystemProps) {
                       {cart.map((item, index) => (
                         <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-button">
                           <div className="flex-1">
-                            <h4 className="font-medium text-gray-900">{item.menu_item.name}</h4>
+                            <div className="flex items-center gap-2 mb-1">
+                              <h4 className="font-medium text-gray-900">{item.menu_item.name}</h4>
+                              <span className="bg-primary text-white text-xs px-2 py-1 rounded-full font-medium">
+                                {item.quantity}
+                              </span>
+                            </div>
                             {item.customizations.length > 0 && (
                               <p className="text-xs text-gray-600">{item.customizations.join(', ')}</p>
                             )}
@@ -692,7 +564,6 @@ export default function OrderingSystem({}: OrderingSystemProps) {
                             >
                               <i className="ri-subtract-line"></i>
                             </button>
-                            <span className="w-8 text-center font-medium">{item.quantity}</span>
                             <button
                               onClick={() => updateQuantity(index, item.quantity + 1)}
                               className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
@@ -718,7 +589,7 @@ export default function OrderingSystem({}: OrderingSystemProps) {
                 </div>
               </div>
 
-              {/* Mobile Cart Footer */}
+              {/* Cart Footer */}
               {cart.length > 0 && (
                 <div className="border-t p-4 bg-white">
                   <div className="flex justify-between items-center mb-4">
