@@ -9,13 +9,13 @@ const coffeeItems = [
   {
     name: 'Classic Silk',
     description: 'A rich, full-bodied and silky coffee made smooth to perfection',
-    price: '$12.99',
+    price: '₹12.99',
     image: 'coffee1'
   },
   {
     name: 'Irish Vibes',
     description: 'A coffee inspired drink with real butter in a creamy base',
-    price: '$5.99',
+    price: '₹5.99',
     image: 'coffee2'
   },
   {

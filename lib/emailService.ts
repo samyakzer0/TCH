@@ -38,7 +38,7 @@ export async function sendOrderConfirmation(
               <div style="background-color: #f0f0f0; padding: 15px; border-radius: 5px; margin: 20px 0;">
                 <strong>Order Details:</strong><br>
                 Order Number: <strong>${orderDetails.order_number}</strong><br>
-                Total: <strong>$${orderDetails.total_amount.toFixed(2)}</strong><br>
+                Total: <strong>₹${orderDetails.total_amount.toFixed(2)}</strong><br>
                 Status: <strong>${orderDetails.status}</strong>
               </div>
               
@@ -98,7 +98,7 @@ export async function sendStatusUpdate(
               <div style="background-color: #f0f0f0; padding: 15px; border-radius: 5px; margin: 20px 0;">
                 <strong>Order #${orderDetails.order_number}</strong><br>
                 Status: <strong style="color: #B66A55;">${newStatus.toUpperCase()}</strong><br>
-                Total: $${orderDetails.total_amount.toFixed(2)}
+                Total: ₹${orderDetails.total_amount.toFixed(2)}
               </div>
               
               ${newStatus === 'ready' ? `

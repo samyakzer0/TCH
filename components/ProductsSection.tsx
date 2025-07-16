@@ -4,12 +4,12 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 const products = [
-  { name: 'Flores', description: 'Medium roast, fruity, 250g', price: '$ 8.90', seq: 'coffeebag2' },
-  { name: 'Sumatra', description: 'Dark roast, earthy, 250g', price: '$ 9.50', seq: 'coffeebag3' },
-  { name: 'Tigerlake', description: 'Medium-dark roast, nutty, 250g', price: '$ 8.40', seq: 'coffeebag4' },
-  { name: 'Andes', description: 'Light roast, floral, 250g', price: '$ 9.90', seq: 'coffeebag5' },
-  { name: 'Bali', description: 'Medium roast, chocolate notes, 250g', price: '$ 8.90', seq: 'coffeebag6' },
-  { name: 'Kintamani', description: 'Dark roast, spicy, 250g', price: '$ 8.40', seq: 'coffeebag7' },
+  { name: 'Flores', description: 'Medium roast, fruity, 250g', price: '₹ 8.90', seq: 'coffeebag2' },
+  { name: 'Sumatra', description: 'Dark roast, earthy, 250g', price: '₹ 9.50', seq: 'coffeebag3' },
+  { name: 'Tigerlake', description: 'Medium-dark roast, nutty, 250g', price: '₹ 8.40', seq: 'coffeebag4' },
+  { name: 'Andes', description: 'Light roast, floral, 250g', price: '₹ 9.90', seq: 'coffeebag5' },
+  { name: 'Bali', description: 'Medium roast, chocolate notes, 250g', price: '₹ 8.90', seq: 'coffeebag6' },
+  { name: 'Kintamani', description: 'Dark roast, spicy, 250g', price: '₹ 8.40', seq: 'coffeebag7' },
 ]
 
 export default function ProductsSection() {

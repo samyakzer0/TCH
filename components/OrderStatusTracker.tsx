@@ -252,7 +252,7 @@ export default function OrderStatusTracker() {
                           minute: '2-digit'
                         })}
                       </p>
-                      <p className="text-sm text-gray-600">${orderItem.total_amount.toFixed(2)}</p>
+                      <p className="text-sm text-gray-600">₹{orderItem.total_amount.toFixed(2)}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -300,7 +300,7 @@ export default function OrderStatusTracker() {
                   {order.table_number && (
                     <p className="text-sm text-gray-600">Table: {order.table_number}</p>
                   )}
-                  <p className="text-sm text-gray-600">Total: ${order.total_amount.toFixed(2)}</p>
+                  <p className="text-sm text-gray-600">Total: ₹{order.total_amount.toFixed(2)}</p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">Customer Info</h3>
@@ -386,7 +386,7 @@ export default function OrderStatusTracker() {
                       )}
                     </div>
                     <span className="font-medium text-gray-900">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      ₹{(item.price * item.quantity).toFixed(2)}
                     </span>
                   </div>
                 ))}

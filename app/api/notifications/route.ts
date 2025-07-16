@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       results.sms = { success: true, error: 'SMS sent successfully (mock)' }
       console.log(`SMS would be sent to ${customerInfo.phone}:`, 
         type === 'order_confirmation' 
-          ? `Order #${orderDetails.order_number} confirmed. Total: $${orderDetails.total_amount.toFixed(2)}`
+          ? `Order #${orderDetails.order_number} confirmed. Total: ₹${orderDetails.total_amount.toFixed(2)}`
           : `Order #${orderDetails.order_number} status updated to: ${status}`
       )
     }

@@ -10,21 +10,6 @@ body {
   background-color: #F5F6FC;
   margin: 0;
   padding: 0;
-  cursor: none; /* Hide default cursor */
-}
-
-/* Hide cursor on all interactive elements */
-* {
-  cursor: none !important;
-}
-
-/* Custom cursor styles */
-.custom-cursor {
-  pointer-events: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
 }
 
 .marquee {

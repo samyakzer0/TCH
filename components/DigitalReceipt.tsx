@@ -37,13 +37,13 @@ export default function DigitalReceipt({
     if (navigator.share) {
       navigator.share({
         title: 'TCH Order Receipt',
-        text: `Order #${orderDetails.order_number} - $${orderDetails.total_amount.toFixed(2)}`,
+        text: `Order #${orderDetails.order_number} - ₹${orderDetails.total_amount.toFixed(2)}`,
         url: window.location.href
       })
     } else {
       // Fallback for browsers that don't support Web Share API
       navigator.clipboard.writeText(
-        `Order #${orderDetails.order_number} - Total: $${orderDetails.total_amount.toFixed(2)} - Track at: ${window.location.origin}/track`
+        `Order #${orderDetails.order_number} - Total: ₹${orderDetails.total_amount.toFixed(2)} - Track at: ${window.location.origin}/track`
       )
       alert('Order details copied to clipboard!')
     }
@@ -133,11 +133,11 @@ export default function DigitalReceipt({
                       </div>
                     )}
                     <div className="text-sm text-gray-600">
-                      ${item.menu_item.price.toFixed(2)} × {item.quantity}
+                      ₹{item.menu_item.price.toFixed(2)} × {item.quantity}
                     </div>
                   </div>
                   <div className="font-medium">
-                    ${(item.menu_item.price * item.quantity).toFixed(2)}
+                    ₹{(item.menu_item.price * item.quantity).toFixed(2)}
                   </div>
                 </div>
               ))}
@@ -158,7 +158,7 @@ export default function DigitalReceipt({
           <div className="border-t pt-4">
             <div className="flex justify-between items-center text-lg font-bold">
               <span>Total Amount:</span>
-              <span className="text-primary">${orderDetails.total_amount.toFixed(2)}</span>
+              <span className="text-primary">₹{orderDetails.total_amount.toFixed(2)}</span>
             </div>
           </div>
 

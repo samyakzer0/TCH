@@ -386,7 +386,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          ${order.total_amount.toFixed(2)}
+                          ₹{order.total_amount.toFixed(2)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex gap-2">
@@ -453,7 +453,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                         <div className="flex-1">
                           <h4 className="font-medium text-gray-900">{item.name}</h4>
                           <p className="text-sm text-gray-600 mb-1">{item.description}</p>
-                          <p className="text-sm font-semibold text-primary">${item.price.toFixed(2)}</p>
+                          <p className="text-sm font-semibold text-primary">₹{item.price.toFixed(2)}</p>
                         </div>
                         <div className="flex items-center gap-2 ml-2">
                           <button 

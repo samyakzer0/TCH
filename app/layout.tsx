@@ -1,6 +1,5 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import CustomCursor from '../components/CustomCursor'
 
 export const metadata: Metadata = {
   title: 'The Chai House',
@@ -16,7 +15,6 @@ export default function RootLayout({
     <html lang="en">
       <body>
         {children}
-        <CustomCursor />
       </body>
     </html>
   )
