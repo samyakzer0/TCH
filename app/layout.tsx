@@ -2,8 +2,12 @@ import './globals.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'The Chai House',
-  description: 'Traditional kulhad chai made with love',
+  title: 'The Chai House - Authentic Indian Chai Experience',
+  description: 'Traditional kulhad chai made with love. Experience the authentic taste of India.',
+  icons: {
+    icon: '/images/gallery/logo.png',
+    apple: '/images/gallery/logo.png',
+  },
 }
 
 export default function RootLayout({

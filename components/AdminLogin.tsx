@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 interface AdminLoginProps {
   onLogin: (userData: any) => void
@@ -47,6 +48,15 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
         className="max-w-md w-full space-y-8"
       >
         <div className="text-center">
+          <div className="flex justify-center mb-6">
+            <Image
+              src="/images/gallery/logo.png"
+              alt="The Chai House Logo"
+              width={64}
+              height={64}
+              className="object-contain"
+            />
+          </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Admin Login</h2>
           <p className="text-gray-600">Access The Chai House admin panel</p>
         </div>

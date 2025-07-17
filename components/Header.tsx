@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
@@ -52,8 +53,15 @@ export default function Header() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link href="/" className="text-primary text-2xl font-pacifico">
-                TCH
+              <Link href="/" className="flex items-center">
+                <Image
+                  src="/images/gallery/logo1.png"
+                  alt="The Chai House Logo"
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                  priority
+                />
               </Link>
             </motion.div>
 

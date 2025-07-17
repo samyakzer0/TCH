@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import Image from 'next/image'
 
 interface DigitalReceiptProps {
   orderDetails: any
@@ -63,9 +64,18 @@ export default function DigitalReceipt({
         {/* Header */}
         <div className="bg-primary text-white p-6 rounded-t-lg">
           <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-2xl font-bold font-pacifico">The Chai House</h2>
-              <p className="text-primary-light text-sm">Order Confirmation</p>
+            <div className="flex items-center gap-3">
+              <Image
+                src="/images/gallery/logo.png"
+                alt="The Chai House Logo"
+                width={32}
+                height={32}
+                className="object-contain filter brightness-0 invert"
+              />
+              <div>
+                <h2 className="text-2xl font-bold font-pacifico">The Chai House</h2>
+                <p className="text-primary-light text-sm">Order Confirmation</p>
+              </div>
             </div>
             <button
               onClick={onClose}

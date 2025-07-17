@@ -28,11 +28,26 @@ export default function HeroSection() {
           {/* Main Title */}
           <div className="absolute inset-0 flex items-center justify-center z-10 px-6">
             <div className="text-center">
+              <motion.div
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="mb-6"
+              >
+                <Image
+                  src="/images/gallery/logo.png"
+                  alt="The Chai House Logo"
+                  width={120}
+                  height={120}
+                  className="object-contain mx-auto filter brightness-0 invert mb-4"
+                />
+              </motion.div>
+              
               <motion.h1 
                 className="text-white text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black tracking-wider leading-tight mb-8"
                 initial={{ y: 100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
               >
                 THE CHAI<br/>HOUSE
               </motion.h1>

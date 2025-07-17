@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import FeedbackModal from './FeedbackModal'
+import Image from 'next/image'
 
 export default function OrderStatusTracker() {
   const [orderNumber, setOrderNumber] = useState('')
@@ -134,13 +135,22 @@ export default function OrderStatusTracker() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Track Your Order</h2>
+    <div className="max-w-2xl mx-auto p-4 sm:p-6">
+      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+        <div className="flex items-center justify-center mb-4 sm:mb-6">
+          <Image
+            src="/images/gallery/logo.png"
+            alt="The Chai House Logo"
+            width={32}
+            height={32}
+            className="object-contain mr-3"
+          />
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Track Your Order</h2>
+        </div>
         
         {/* Search Type Selection */}
         <div className="mb-4">
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <button
               onClick={() => {
                 setSearchType('order_number')
@@ -148,14 +158,14 @@ export default function OrderStatusTracker() {
                 setOrder(null)
                 setOrders([])
               }}
-              className={`flex-1 py-2 px-4 rounded-button font-medium transition-colors ${
+              className={`flex-1 py-2 px-3 sm:px-4 rounded-button font-medium transition-colors ${
                 searchType === 'order_number'
                   ? 'bg-primary text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               <i className="ri-file-list-line mr-2"></i>
-              Order Number
+              <span className="text-sm sm:text-base">Order Number</span>
             </button>
             <button
               onClick={() => {
@@ -164,17 +174,17 @@ export default function OrderStatusTracker() {
                 setOrder(null)
                 setOrders([])
               }}
-              className={`flex-1 py-2 px-4 rounded-button font-medium transition-colors ${
+              className={`flex-1 py-2 px-3 sm:px-4 rounded-button font-medium transition-colors ${
                 searchType === 'phone'
                   ? 'bg-primary text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               <i className="ri-phone-line mr-2"></i>
-              Phone Number
+              <span className="text-sm sm:text-base">Phone Number</span>
             </button>
           </div>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-gray-500 mt-2 px-2">
             {searchType === 'order_number' 
               ? 'Search for a specific order using your order number'
               : 'Search for all orders associated with your phone number'
@@ -183,15 +193,15 @@ export default function OrderStatusTracker() {
         </div>
 
         {/* Search Input */}
-        <div className="flex gap-3 mb-6">
+        <div className="flex flex-col sm:flex-row gap-3 mb-4 sm:mb-6">
           {searchType === 'order_number' ? (
             <input
               type="text"
-              placeholder="Enter your order number (e.g., TCH-1234567890-ABCD)"
+              placeholder="Enter order number (e.g., TCH-1234567890-ABCD)"
               value={orderNumber}
               onChange={(e) => setOrderNumber(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="flex-1 p-3 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="flex-1 p-3 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm sm:text-base"
             />
           ) : (
             <input
@@ -200,20 +210,20 @@ export default function OrderStatusTracker() {
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="flex-1 p-3 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="flex-1 p-3 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm sm:text-base"
             />
           )}
           <button
             onClick={trackOrder}
             disabled={loading}
-            className="bg-primary text-white px-6 py-3 rounded-button hover:bg-primary/90 transition-colors disabled:opacity-50"
+            className="bg-primary text-white px-4 py-3 sm:px-6 sm:py-3 rounded-button hover:bg-primary/90 transition-colors disabled:opacity-50 text-sm sm:text-base whitespace-nowrap"
           >
             {loading ? 'Searching...' : 'Track Order'}
           </button>
           {(orderNumber || phoneNumber || order || orders.length > 0) && (
             <button
               onClick={clearSearch}
-              className="px-4 py-3 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors"
+              className="px-3 py-3 sm:px-4 sm:py-3 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors"
               title="Clear search"
             >
               <i className="ri-close-line"></i>
@@ -222,15 +232,15 @@ export default function OrderStatusTracker() {
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-button p-4 mb-6">
-            <p className="text-red-600">{error}</p>
+          <div className="bg-red-50 border border-red-200 rounded-button p-3 sm:p-4 mb-4 sm:mb-6">
+            <p className="text-red-600 text-sm sm:text-base">{error}</p>
           </div>
         )}
 
         {/* Multiple Orders List (when searching by phone) */}
         {orders.length > 1 && (
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <div className="mb-4 sm:mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
               Found {orders.length} orders for this phone number:
             </h3>
             <div className="space-y-3">
@@ -238,12 +248,12 @@ export default function OrderStatusTracker() {
                 <div
                   key={index}
                   onClick={() => selectOrder(orderItem)}
-                  className="p-4 border rounded-button hover:bg-gray-50 cursor-pointer transition-colors"
+                  className="p-3 sm:p-4 border rounded-button hover:bg-gray-50 cursor-pointer transition-colors"
                 >
                   <div className="flex justify-between items-start">
-                    <div>
-                      <p className="font-medium text-gray-900">Order #{orderItem.order_number}</p>
-                      <p className="text-sm text-gray-600">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 text-sm sm:text-base truncate">Order #{orderItem.order_number}</p>
+                      <p className="text-xs sm:text-sm text-gray-600">
                         {new Date(orderItem.created_at).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'short',
@@ -252,9 +262,9 @@ export default function OrderStatusTracker() {
                           minute: '2-digit'
                         })}
                       </p>
-                      <p className="text-sm text-gray-600">₹{orderItem.total_amount.toFixed(2)}</p>
+                      <p className="text-xs sm:text-sm text-gray-600">₹{orderItem.total_amount.toFixed(2)}</p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-shrink-0">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         orderItem.status === 'completed' ? 'bg-green-100 text-green-800' :
                         orderItem.status === 'ready' ? 'bg-blue-100 text-blue-800' :
@@ -277,13 +287,13 @@ export default function OrderStatusTracker() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
           >
             {/* Back Button (only show when there were multiple orders) */}
             {searchType === 'phone' && orders.length === 0 && (
               <button
                 onClick={goBackToList}
-                className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+                className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors text-sm sm:text-base"
               >
                 <i className="ri-arrow-left-line"></i>
                 Back to all orders
@@ -291,22 +301,22 @@ export default function OrderStatusTracker() {
             )}
 
             {/* Order Details */}
-            <div className="bg-gray-50 rounded-button p-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-gray-50 rounded-button p-3 sm:p-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Order Details</h3>
-                  <p className="text-sm text-gray-600">Order: {order.order_number}</p>
-                  <p className="text-sm text-gray-600">Type: {order.order_type}</p>
+                  <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Order Details</h3>
+                  <p className="text-xs sm:text-sm text-gray-600">Order: {order.order_number}</p>
+                  <p className="text-xs sm:text-sm text-gray-600">Type: {order.order_type}</p>
                   {order.table_number && (
-                    <p className="text-sm text-gray-600">Table: {order.table_number}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Table: {order.table_number}</p>
                   )}
-                  <p className="text-sm text-gray-600">Total: ₹{order.total_amount.toFixed(2)}</p>
+                  <p className="text-xs sm:text-sm text-gray-600">Total: ₹{order.total_amount.toFixed(2)}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Customer Info</h3>
-                  <p className="text-sm text-gray-600">{order.customer_name || 'N/A'}</p>
-                  <p className="text-sm text-gray-600">{order.customer_phone || 'N/A'}</p>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">Customer Info</h3>
+                  <p className="text-xs sm:text-sm text-gray-600">{order.customer_name || 'N/A'}</p>
+                  <p className="text-xs sm:text-sm text-gray-600">{order.customer_phone || 'N/A'}</p>
+                  <p className="text-xs sm:text-sm text-gray-600">
                     Placed: {new Date(order.created_at).toLocaleString()}
                   </p>
                 </div>
@@ -314,16 +324,16 @@ export default function OrderStatusTracker() {
             </div>
 
             {/* Status Timeline */}
-            <div className="space-y-4">
-              <h3 className="font-semibold text-gray-900">Order Status</h3>
+            <div className="space-y-3 sm:space-y-4">
+              <h3 className="font-semibold text-gray-900 text-sm sm:text-base">Order Status</h3>
               
               {order.status === 'cancelled' ? (
-                <div className="flex items-center gap-3 p-4 bg-red-50 rounded-button">
-                  <i className="ri-close-circle-line text-red-600 text-xl"></i>
-                  <span className="font-medium text-red-600">Order Cancelled</span>
+                <div className="flex items-center gap-3 p-3 sm:p-4 bg-red-50 rounded-button">
+                  <i className="ri-close-circle-line text-red-600 text-lg sm:text-xl"></i>
+                  <span className="font-medium text-red-600 text-sm sm:text-base">Order Cancelled</span>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {getStatusSteps().map((step, index) => {
                     const currentIndex = getCurrentStepIndex()
                     const isActive = index <= currentIndex
@@ -339,12 +349,12 @@ export default function OrderStatusTracker() {
                           isActive ? 'bg-primary/10' : 'bg-gray-50'
                         }`}
                       >
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ${
                           isActive ? 'bg-primary text-white' : 'bg-gray-200 text-gray-400'
                         }`}>
                           <i className={`${step.icon} text-sm`}></i>
                         </div>
-                        <span className={`font-medium ${
+                        <span className={`font-medium text-sm sm:text-base ${
                           isActive ? 'text-primary' : 'text-gray-400'
                         }`}>
                           {step.label}
@@ -362,7 +372,7 @@ export default function OrderStatusTracker() {
 
               {order.estimated_completion_time && (
                 <div className="bg-blue-50 border border-blue-200 rounded-button p-3">
-                  <p className="text-sm text-blue-600">
+                  <p className="text-xs sm:text-sm text-blue-600">
                     <i className="ri-time-line mr-2"></i>
                     Estimated completion: {new Date(order.estimated_completion_time).toLocaleString()}
                   </p>
@@ -372,20 +382,20 @@ export default function OrderStatusTracker() {
 
             {/* Order Items */}
             <div className="space-y-3">
-              <h3 className="font-semibold text-gray-900">Order Items</h3>
+              <h3 className="font-semibold text-gray-900 text-sm sm:text-base">Order Items</h3>
               <div className="space-y-2">
                 {order.items?.map((item: any, index: number) => (
-                  <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-button">
-                    <div>
-                      <h4 className="font-medium text-gray-900">{item.menu_item?.name}</h4>
-                      <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+                  <div key={index} className="flex justify-between items-start p-3 bg-gray-50 rounded-button">
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-medium text-gray-900 text-sm sm:text-base">{item.menu_item?.name}</h4>
+                      <p className="text-xs sm:text-sm text-gray-600">Quantity: {item.quantity}</p>
                       {item.customizations && (
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 line-clamp-2">
                           {JSON.parse(item.customizations).join(', ')}
                         </p>
                       )}
                     </div>
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-gray-900 text-sm sm:text-base flex-shrink-0 ml-3">
                       ₹{(item.price * item.quantity).toFixed(2)}
                     </span>
                   </div>
@@ -396,17 +406,17 @@ export default function OrderStatusTracker() {
             {/* Special Instructions */}
             {order.special_instructions && (
               <div className="bg-yellow-50 border border-yellow-200 rounded-button p-3">
-                <h4 className="font-medium text-yellow-800 mb-1">Special Instructions</h4>
-                <p className="text-sm text-yellow-700">{order.special_instructions}</p>
+                <h4 className="font-medium text-yellow-800 mb-1 text-sm sm:text-base">Special Instructions</h4>
+                <p className="text-xs sm:text-sm text-yellow-700">{order.special_instructions}</p>
               </div>
             )}
 
             {/* Actions */}
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               {canCancel() && (
                 <button
                   onClick={handleCancel}
-                  className="flex-1 bg-red-600 text-white py-2 rounded-button hover:bg-red-700 transition-colors"
+                  className="flex-1 bg-red-600 text-white py-2 px-4 rounded-button hover:bg-red-700 transition-colors text-sm sm:text-base"
                 >
                   Cancel Order
                 </button>
@@ -414,7 +424,7 @@ export default function OrderStatusTracker() {
               {canProvideFeedback() && (
                 <button
                   onClick={() => setShowFeedback(true)}
-                  className="flex-1 bg-primary text-white py-2 rounded-button hover:bg-primary/90 transition-colors"
+                  className="flex-1 bg-primary text-white py-2 px-4 rounded-button hover:bg-primary/90 transition-colors text-sm sm:text-base"
                 >
                   Leave Feedback
                 </button>

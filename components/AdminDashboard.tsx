@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Order, MenuItem, OrderStats } from '../types'
+import Image from 'next/image'
 
 interface AdminDashboardProps {
   user: any
@@ -252,31 +253,41 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-4">
-              <h1 className="text-2xl font-bold text-primary font-pacifico">TCH Admin</h1>
-              <div className="flex items-center gap-2 text-gray-600">
+          <div className="flex justify-between items-start sm:items-center h-auto sm:h-16 py-4 sm:py-0">
+            <div className="flex items-center gap-4 mb-3 sm:mb-0">
+              <div className="flex items-center gap-3">
+                <Image
+                  src="/images/gallery/logo.png"
+                  alt="TCH Logo"
+                  width={32}
+                  height={32}
+                  className="object-contain"
+                />
+                <h1 className="text-xl sm:text-2xl font-bold text-primary font-pacifico">TCH Admin</h1>
+              </div>
+              <div className="hidden sm:flex items-center gap-2 text-gray-600">
                 <span className="text-gray-300">|</span>
                 <i className={getTabIcon(activeTab)}></i>
                 <span className="font-medium">{getTabDisplayName(activeTab)}</span>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">Welcome, {user.email}</span>
+            <div className="flex items-center gap-2 sm:gap-4">
+              <span className="text-xs sm:text-sm text-gray-600">Welcome, {user.email}</span>
               <button
                 onClick={onLogout}
-                className="bg-red-600 text-white px-4 py-2 rounded-button hover:bg-red-700 transition-colors"
+                className="bg-red-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-button hover:bg-red-700 transition-colors text-sm"
               >
-                Logout
+                <i className="ri-logout-circle-line sm:mr-2"></i>
+                <span className="hidden sm:inline">Logout</span>
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Navigation Tabs */}
-        <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-8">
+        <div className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-1 bg-gray-100 p-1 rounded-lg mb-6 sm:mb-8">
           {[
             { key: 'orders', label: 'Orders', icon: 'ri-file-list-3-line' },
             { key: 'menu', label: 'Menu', icon: 'ri-restaurant-line' },
@@ -285,14 +296,14 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-button font-medium transition-colors ${
+              className={`flex items-center justify-center gap-2 py-2 px-4 rounded-button font-medium transition-colors ${
                 activeTab === tab.key
                   ? 'bg-white text-primary shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
               <i className={tab.icon}></i>
-              {tab.label}
+              <span className="text-sm sm:text-base">{tab.label}</span>
             </button>
           ))}
         </div>
@@ -304,12 +315,12 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             animate={{ opacity: 1, y: 0 }}
             className="space-y-6"
           >
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">Orders Management</h2>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Orders Management</h2>
               <div className="flex gap-2">
                 <button
                   onClick={fetchOrders}
-                  className="bg-primary text-white px-4 py-2 rounded-button hover:bg-primary/90 transition-colors"
+                  className="bg-primary text-white px-3 py-2 sm:px-4 sm:py-2 rounded-button hover:bg-primary/90 transition-colors text-sm"
                 >
                   <i className="ri-refresh-line mr-2"></i>
                   Refresh
@@ -318,28 +329,92 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             </div>
 
             {/* Order Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-white p-4 rounded-lg shadow-sm">
-                <div className="text-2xl font-bold text-blue-600">{orders.filter(o => o.status === 'received').length}</div>
-                <div className="text-sm text-gray-600">New Orders</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+              <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                <div className="text-lg sm:text-2xl font-bold text-blue-600">{orders.filter(o => o.status === 'received').length}</div>
+                <div className="text-xs sm:text-sm text-gray-600">New Orders</div>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm">
-                <div className="text-2xl font-bold text-yellow-600">{orders.filter(o => o.status === 'preparing').length}</div>
-                <div className="text-sm text-gray-600">Preparing</div>
+              <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                <div className="text-lg sm:text-2xl font-bold text-yellow-600">{orders.filter(o => o.status === 'preparing').length}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Preparing</div>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm">
-                <div className="text-2xl font-bold text-green-600">{orders.filter(o => o.status === 'ready').length}</div>
-                <div className="text-sm text-gray-600">Ready</div>
+              <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                <div className="text-lg sm:text-2xl font-bold text-green-600">{orders.filter(o => o.status === 'ready').length}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Ready</div>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm">
-                <div className="text-2xl font-bold text-gray-600">{orders.filter(o => o.status === 'completed').length}</div>
-                <div className="text-sm text-gray-600">Completed</div>
+              <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                <div className="text-lg sm:text-2xl font-bold text-gray-600">{orders.filter(o => o.status === 'completed').length}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Completed</div>
               </div>
             </div>
 
             {/* Orders List */}
             <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-              <div className="overflow-x-auto">
+              {/* Mobile View */}
+              <div className="block sm:hidden">
+                <div className="divide-y divide-gray-200">
+                  {orders.map(order => (
+                    <div key={order.id} className="p-4 space-y-3">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <div className="text-sm font-medium text-gray-900">{order.order_number}</div>
+                          <div className="text-xs text-gray-500">{formatDate(order.created_at)}</div>
+                        </div>
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-button ${getStatusColor(order.status)}`}>
+                          {order.status}
+                        </span>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <div className="text-gray-500">Customer</div>
+                          <div className="text-gray-900">{order.customer_name || 'N/A'}</div>
+                          <div className="text-gray-500 text-xs">{order.customer_phone || 'N/A'}</div>
+                        </div>
+                        <div>
+                          <div className="text-gray-500">Type & Total</div>
+                          <div className="text-gray-900 capitalize">{order.order_type}</div>
+                          <div className="text-gray-900 font-medium">₹{order.total_amount.toFixed(2)}</div>
+                        </div>
+                      </div>
+                      
+                      {order.table_number && (
+                        <div className="text-sm text-gray-500">Table {order.table_number}</div>
+                      )}
+                      
+                      <div className="flex flex-wrap gap-2 pt-2">
+                        {order.status === 'received' && (
+                          <button
+                            onClick={() => updateOrderStatus(order.id, 'preparing')}
+                            className="bg-yellow-600 text-white px-3 py-1 rounded-button hover:bg-yellow-700 transition-colors text-xs"
+                          >
+                            Start Preparing
+                          </button>
+                        )}
+                        {order.status === 'preparing' && (
+                          <button
+                            onClick={() => updateOrderStatus(order.id, 'ready')}
+                            className="bg-green-600 text-white px-3 py-1 rounded-button hover:bg-green-700 transition-colors text-xs"
+                          >
+                            Mark Ready
+                          </button>
+                        )}
+                        {order.status === 'ready' && (
+                          <button
+                            onClick={() => updateOrderStatus(order.id, 'completed')}
+                            className="bg-gray-600 text-white px-3 py-1 rounded-button hover:bg-gray-700 transition-colors text-xs"
+                          >
+                            Complete
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Desktop View */}
+              <div className="hidden sm:block overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
@@ -432,48 +507,50 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             animate={{ opacity: 1, y: 0 }}
             className="space-y-6"
           >
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">Menu Management</h2>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Menu Management</h2>
               <button
                 onClick={() => openMenuModal()}
-                className="bg-primary text-white px-4 py-2 rounded-button hover:bg-primary/90 transition-colors"
+                className="bg-primary text-white px-4 py-2 rounded-button hover:bg-primary/90 transition-colors w-full sm:w-auto"
               >
                 <i className="ri-add-line mr-2"></i>
                 Add Item
               </button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
               {Object.entries(menuItems).map(([category, items]) => (
-                <div key={category} className="bg-white rounded-lg shadow-sm p-6">
+                <div key={category} className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">{category}</h3>
                   <div className="space-y-3">
                     {items.map(item => (
                       <div key={item.id} className="flex justify-between items-start p-3 bg-gray-50 rounded-button">
-                        <div className="flex-1">
-                          <h4 className="font-medium text-gray-900">{item.name}</h4>
-                          <p className="text-sm text-gray-600 mb-1">{item.description}</p>
-                          <p className="text-sm font-semibold text-primary">₹{item.price.toFixed(2)}</p>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-gray-900 truncate">{item.name}</h4>
+                          <p className="text-sm text-gray-600 line-clamp-2">{item.description}</p>
+                          <p className="text-sm font-semibold text-primary mt-1">₹{item.price.toFixed(2)}</p>
                         </div>
-                        <div className="flex items-center gap-2 ml-2">
+                        <div className="flex flex-col items-end gap-2 ml-3 flex-shrink-0">
                           <button 
                             onClick={() => toggleItemAvailability(item.id, item.is_available)}
-                            className={`text-xs px-2 py-1 rounded ${item.is_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
+                            className={`text-xs px-2 py-1 rounded whitespace-nowrap ${item.is_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
                           >
-                            {item.is_available ? 'In Stock' : 'Out of Stock'}
+                            {item.is_available ? 'Available' : 'Out of Stock'}
                           </button>
-                          <button
-                            onClick={() => openMenuModal(item)}
-                            className="text-gray-400 hover:text-primary"
-                          >
-                            <i className="ri-edit-line"></i>
-                          </button>
-                          <button
-                            onClick={() => deleteMenuItem(item.id)}
-                            className="text-gray-400 hover:text-red-600"
-                          >
-                            <i className="ri-delete-bin-line"></i>
-                          </button>
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => openMenuModal(item)}
+                              className="text-gray-400 hover:text-primary p-1"
+                            >
+                              <i className="ri-edit-line"></i>
+                            </button>
+                            <button
+                              onClick={() => deleteMenuItem(item.id)}
+                              className="text-gray-400 hover:text-red-600 p-1"
+                            >
+                              <i className="ri-delete-bin-line"></i>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}

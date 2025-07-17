@@ -6,6 +6,7 @@ import { MenuItem, CartItem } from '../types'
 import FeedbackModal from './FeedbackModal'
 import DigitalReceipt from './DigitalReceipt'
 import NotificationSystem, { useNotifications } from './NotificationSystem'
+import Image from 'next/image'
 
 interface OrderingSystemProps {}
 
@@ -251,8 +252,16 @@ export default function OrderingSystem({}: OrderingSystemProps) {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className="flex flex-col justify-center items-center h-64">
+        <Image
+          src="/images/gallery/logo.png"
+          alt="The Chai House Logo"
+          width={48}
+          height={48}
+          className="object-contain mb-4 animate-pulse"
+        />
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        <p className="text-gray-600 mt-4">Loading menu...</p>
       </div>
     )
   }
@@ -265,8 +274,17 @@ export default function OrderingSystem({}: OrderingSystemProps) {
         className="max-w-2xl mx-auto p-6"
       >
         <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i className="ri-check-line text-green-600 text-2xl"></i>
+          <div className="flex flex-col items-center mb-4">
+            <Image
+              src="/images/gallery/logo.png"
+              alt="The Chai House Logo"
+              width={48}
+              height={48}
+              className="object-contain mb-2"
+            />
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+              <i className="ri-check-line text-green-600 text-2xl"></i>
+            </div>
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Order Placed Successfully!</h2>
           <p className="text-gray-600 mb-4">Your order has been received and is being prepared.</p>
