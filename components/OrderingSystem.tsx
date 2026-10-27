@@ -6,10 +6,12 @@ import { MenuItem, CartItem } from '../types'
 import FeedbackModal from './FeedbackModal'
 import DigitalReceipt from './DigitalReceipt'
 import NotificationSystem, { useNotifications } from './NotificationSystem'
+import { useAuth } from './AuthProvider'
 
 interface OrderingSystemProps {}
 
 export default function OrderingSystem({}: OrderingSystemProps) {
+  const { user } = useAuth()
   const [menuItems, setMenuItems] = useState<{[category: string]: MenuItem[]}>({})
   const [cart, setCart] = useState<CartItem[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('')
@@ -21,6 +23,17 @@ export default function OrderingSystem({}: OrderingSystemProps) {
     email: '',
     table_number: ''
   })
+
+  // Auto-fill customer details from Google Auth if logged in
+  useEffect(() => {
+    if (user) {
+      setCustomerInfo(prev => ({
+        ...prev,
+        name: prev.name || user.user_metadata?.full_name || user.email?.split('@')[0] || '',
+        email: prev.email || user.email || ''
+      }))
+    }
+  }, [user])
   const [specialInstructions, setSpecialInstructions] = useState('')
   const [showCustomizations, setShowCustomizations] = useState<{item: MenuItem, show: boolean}>({item: {} as MenuItem, show: false})
   const [currentCustomizations, setCurrentCustomizations] = useState<string[]>([])

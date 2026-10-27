@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { initializeDatabase, runStatement } from '../../../../lib/database';
+import { 
+  isSupabaseAdminConfigured, 
+  updateSupabaseOrderStatus, 
+  cancelSupabaseOrder 
+} from '../../../../lib/supabaseDb';
 
 export async function PATCH(
   request: NextRequest,
@@ -8,7 +13,16 @@ export async function PATCH(
   try {
     const { status, estimated_completion_time } = await request.json();
     const orderId = params.id;
-    
+
+    if (isSupabaseAdminConfigured()) {
+      await updateSupabaseOrderStatus(orderId, status, estimated_completion_time);
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Order status updated successfully',
+        source: 'supabase'
+      });
+    }
+
     await initializeDatabase();
     
     let query = `UPDATE orders SET status = ?, updated_at = CURRENT_TIMESTAMP`;
@@ -26,7 +40,8 @@ export async function PATCH(
     
     return NextResponse.json({ 
       success: true, 
-      message: 'Order status updated successfully' 
+      message: 'Order status updated successfully',
+      source: 'sqlite'
     });
   } catch (error) {
     console.error('Error updating order status:', error);
@@ -43,7 +58,16 @@ export async function DELETE(
 ) {
   try {
     const orderId = params.id;
-    
+
+    if (isSupabaseAdminConfigured()) {
+      await cancelSupabaseOrder(orderId);
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Order cancelled successfully',
+        source: 'supabase'
+      });
+    }
+
     await initializeDatabase();
     
     await runStatement(`
@@ -54,7 +78,8 @@ export async function DELETE(
     
     return NextResponse.json({ 
       success: true, 
-      message: 'Order cancelled successfully' 
+      message: 'Order cancelled successfully',
+      source: 'sqlite'
     });
   } catch (error) {
     console.error('Error cancelling order:', error);

@@ -1,6 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import CustomCursor from '../components/CustomCursor'
+import AuthProvider from '../components/AuthProvider'
 
 export const metadata: Metadata = {
   title: 'The Chai House',
@@ -15,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
-        <CustomCursor />
+        <AuthProvider>
+          {children}
+          <CustomCursor />
+        </AuthProvider>
       </body>
     </html>
   )

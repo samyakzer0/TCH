@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { initializeDatabase, runQuery, runStatement } from '../../../lib/database';
-import { v4 as uuidv4 } from 'uuid';
-import { Order, OrderItem, OrderNotification } from '../../../types';
+import { 
+  isSupabaseAdminConfigured, 
+  getSupabaseOrders, 
+  createSupabaseOrder 
+} from '../../../lib/supabaseDb';
+import { OrderNotification } from '../../../types';
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,10 +14,25 @@ export async function GET(request: NextRequest) {
     const limit = searchParams.get('limit');
     const orderNumber = searchParams.get('order_number');
     const phone = searchParams.get('phone');
-    
+
+    if (isSupabaseAdminConfigured()) {
+      const ordersWithItems = await getSupabaseOrders({
+        status,
+        orderNumber,
+        phone,
+        limit: limit ? parseInt(limit) : null
+      });
+
+      return NextResponse.json({
+        success: true,
+        data: ordersWithItems,
+        source: 'supabase'
+      });
+    }
+
+    // Fallback to SQLite
     await initializeDatabase();
     
-    // First get orders
     let orderQuery = `SELECT * FROM orders`;
     const orderParams: any[] = [];
     const conditions: string[] = [];
@@ -46,7 +65,6 @@ export async function GET(request: NextRequest) {
     
     const orders = await runQuery(orderQuery, orderParams) as any[];
     
-    // Then get items for each order
     const ordersWithItems = await Promise.all(
       orders.map(async (order) => {
         const items = await runQuery(`
@@ -74,7 +92,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ 
       success: true, 
-      data: ordersWithItems 
+      data: ordersWithItems,
+      source: 'sqlite'
     });
   } catch (error) {
     console.error('Error fetching orders:', error);
@@ -97,8 +116,6 @@ export async function POST(request: NextRequest) {
       special_instructions 
     } = await request.json();
     
-    await initializeDatabase();
-    
     // Calculate total amount
     const total_amount = items.reduce((sum: number, item: any) => {
       return sum + (item.price * item.quantity);
@@ -106,26 +123,49 @@ export async function POST(request: NextRequest) {
     
     // Generate order number
     const order_number = `TCH-${Date.now()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
-    
-    // Create order
-    const orderResult = await runStatement(`
-      INSERT INTO orders (
-        order_number, customer_name, customer_phone, customer_email, order_type, 
-        table_number, total_amount, special_instructions
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `, [order_number, customer_name, customer_phone, customer_email, order_type, table_number, total_amount, special_instructions]);
-    
-    const orderId = orderResult.id;
-    
-    // Create order items
-    for (const item of items) {
-      await runStatement(`
-        INSERT INTO order_items (order_id, menu_item_id, quantity, price, customizations)
-        VALUES (?, ?, ?, ?, ?)
-      `, [orderId, item.menu_item_id, item.quantity, item.price, JSON.stringify(item.customizations || [])]);
+
+    let orderId: number;
+
+    if (isSupabaseAdminConfigured()) {
+      const result = await createSupabaseOrder({
+        order_number,
+        customer_name,
+        customer_phone,
+        customer_email,
+        order_type,
+        table_number,
+        total_amount,
+        special_instructions,
+        items: items.map((item: any) => ({
+          menu_item_id: item.menu_item_id,
+          quantity: item.quantity,
+          price: item.price,
+          customizations: item.customizations || []
+        }))
+      });
+      orderId = result.id;
+    } else {
+      // Fallback to SQLite
+      await initializeDatabase();
+
+      const orderResult = await runStatement(`
+        INSERT INTO orders (
+          order_number, customer_name, customer_phone, customer_email, order_type, 
+          table_number, total_amount, special_instructions
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `, [order_number, customer_name, customer_phone, customer_email, order_type, table_number, total_amount, special_instructions]);
+      
+      orderId = orderResult.id;
+      
+      for (const item of items) {
+        await runStatement(`
+          INSERT INTO order_items (order_id, menu_item_id, quantity, price, customizations)
+          VALUES (?, ?, ?, ?, ?)
+        `, [orderId, item.menu_item_id, item.quantity, item.price, JSON.stringify(item.customizations || [])]);
+      }
     }
     
-    // Send notification (you can implement email/SMS here)
+    // Prepare notification object
     const notification: OrderNotification = {
       order_number,
       customer_name,
@@ -135,14 +175,13 @@ export async function POST(request: NextRequest) {
       items: items.map((item: any) => ({
         name: item.name,
         quantity: item.quantity,
-        customizations: item.customizations?.join(', ')
+        customizations: Array.isArray(item.customizations) ? item.customizations.join(', ') : item.customizations
       })),
       total_amount,
       special_instructions,
       created_at: new Date().toISOString()
     };
     
-    // Here you would send notification to staff
     console.log('New Order Notification:', notification);
     
     return NextResponse.json({ 
@@ -152,7 +191,8 @@ export async function POST(request: NextRequest) {
         order_number,
         total_amount,
         estimated_time: '15-20 minutes'
-      } 
+      },
+      source: isSupabaseAdminConfigured() ? 'supabase' : 'sqlite'
     });
   } catch (error) {
     console.error('Error creating order:', error);

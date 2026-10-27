@@ -262,10 +262,33 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">Welcome, {user.email}</span>
+              <div className="flex items-center gap-2.5">
+                {user.avatar_url ? (
+                  <img
+                    src={user.avatar_url}
+                    alt={user.name || user.email}
+                    className="w-8 h-8 rounded-full border border-gray-200"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold flex items-center justify-center text-xs">
+                    {(user.name || user.email || 'A').charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <div className="text-left hidden sm:block">
+                  <p className="text-xs font-semibold text-gray-900 leading-tight">
+                    {user.name || user.email}
+                  </p>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className="text-[10px] text-gray-500">{user.email}</span>
+                    {user.auth_provider === 'google' && (
+                      <span className="text-[9px] bg-blue-50 text-blue-700 px-1.5 py-0.2 rounded font-medium">Google</span>
+                    )}
+                  </div>
+                </div>
+              </div>
               <button
                 onClick={onLogout}
-                className="bg-red-600 text-white px-4 py-2 rounded-button hover:bg-red-700 transition-colors"
+                className="bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
               >
                 Logout
               </button>

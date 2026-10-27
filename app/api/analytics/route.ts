@@ -1,8 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { initializeDatabase, runQuery } from '../../../lib/database';
+import { 
+  isSupabaseAdminConfigured, 
+  getSupabaseAnalytics 
+} from '../../../lib/supabaseDb';
 
 export async function GET() {
   try {
+    if (isSupabaseAdminConfigured()) {
+      const analyticsData = await getSupabaseAnalytics();
+      return NextResponse.json({ 
+        success: true, 
+        data: analyticsData,
+        source: 'supabase'
+      });
+    }
+
+    // Fallback to SQLite
     await initializeDatabase();
     
     // Get total orders
@@ -71,7 +85,8 @@ export async function GET() {
         popular_items: popularItems,
         recent_feedback: recentFeedback,
         sales_by_day: salesByDay
-      }
+      },
+      source: 'sqlite'
     });
   } catch (error) {
     console.error('Error fetching analytics:', error);
